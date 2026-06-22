@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { createOne, deleteOne, getAll, getMine, saveMine, updateOne } from "../controllers/feedbackController.js";
+import { adminOnly, protect } from "../middleware/auth.js";
+const router = Router();
+router.get("/my", protect, getMine);
+router.put("/my", protect, saveMine);
+router.get("/", protect, adminOnly, getAll);
+router.post("/", protect, adminOnly, createOne);
+router.put("/:id", protect, adminOnly, updateOne);
+router.delete("/:id", protect, adminOnly, deleteOne);
+export default router;
