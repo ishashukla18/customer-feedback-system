@@ -1,44 +1,152 @@
-# User Feedback MERN App
+# Customer Feedback System
 
-A simple interview project with user registration/login, one editable feedback submission per user, and an admin dashboard for viewing, editing, and deleting feedback.
+A full-stack MERN application that allows users to register, log in, and submit feedback through a secure dashboard. The application also provides an admin panel for managing all user feedback entries.
 
-## Project structure
+## Features
 
-- `client/`: React + Vite UI
-- `server/`: Express API, MongoDB models, JWT authentication
-- `User` model: name, email, hashed password, role
-- `Feedback` model: user reference, title, message, rating
+### User Features
 
-## Run locally
+* User registration and login using JWT authentication
+* Secure password storage with bcrypt hashing
+* Submit feedback with title, message, and rating
+* Update previously submitted feedback
+* View personal feedback data
 
-1. Install MongoDB locally and make sure it is running.
-2. Copy `server/.env.example` to `server/.env`.
-3. Run `npm install` in the project root.
-4. Run `npm run install:all`.
-5. Create the admin with `npm run seed:admin --prefix server`.
-6. Start both apps with `npm run dev`.
-7. Open `http://localhost:5173`.
+### Admin Features
 
-The example admin login is `admin@example.com` / `admin123`. Change it in `server/.env` before seeding for a real deployment.
+* View all feedback submissions
+* Create feedback entries for registered users
+* Edit existing feedback
+* Delete feedback records
+* Role-based access control
 
-## How to explain it
+## Tech Stack
 
-1. React sends form data to Express using `fetch`.
-2. Registration hashes passwords with bcrypt. Login returns a signed JWT.
-3. The client stores the JWT and sends it as an Authorization header.
-4. The `protect` middleware verifies the JWT. `adminOnly` also checks the role.
-5. `PUT /api/feedback/my` uses MongoDB upsert: it creates feedback if none exists, otherwise updates it.
-6. Admin routes create, list, update, or delete feedback and are inaccessible to normal users.
+### Frontend
 
-## Main API routes
+* React
+* Vite
+* React Router
+* Context API
 
-| Method | Route | Access | Purpose |
-| --- | --- | --- | --- |
-| POST | `/api/auth/register` | Public | Register |
-| POST | `/api/auth/login` | Public | Login |
-| GET | `/api/feedback/my` | User | Get own feedback |
-| PUT | `/api/feedback/my` | User | Add/update own feedback |
-| GET | `/api/feedback` | Admin | List all |
-| POST | `/api/feedback` | Admin | Create for a registered user |
-| PUT | `/api/feedback/:id` | Admin | Update one |
-| DELETE | `/api/feedback/:id` | Admin | Delete one |
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT Authentication
+* bcrypt
+
+## Project Structure
+
+```text
+customer-feedback-system/
+│
+├── client/          # React frontend
+├── server/          # Express backend
+│   ├── models/
+│   ├── controllers/
+│   ├── routes/
+│   ├── middleware/
+│   └── config/
+│
+└── README.md
+```
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ishashukla18/customer-feedback-system.git
+cd customer-feedback-system
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+npm run install:all
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file inside the `server` directory and add:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin123
+```
+
+### 4. Seed Admin Account
+
+```bash
+npm run seed:admin --prefix server
+```
+
+### 5. Start Development Servers
+
+```bash
+npm run dev
+```
+
+Frontend:
+
+```text
+http://localhost:5173
+```
+
+Backend:
+
+```text
+http://localhost:5000
+```
+
+## Authentication Flow
+
+1. User registers with name, email, and password.
+2. Password is hashed before being stored in MongoDB.
+3. User logs in and receives a JWT token.
+4. Token is sent with protected requests using the Authorization header.
+5. Backend middleware validates the token before granting access.
+
+## API Endpoints
+
+### Authentication
+
+| Method | Endpoint           | Description         |
+| ------ | ------------------ | ------------------- |
+| POST   | /api/auth/register | Register a new user |
+| POST   | /api/auth/login    | Login user          |
+
+### User Feedback
+
+| Method | Endpoint         | Description               |
+| ------ | ---------------- | ------------------------- |
+| GET    | /api/feedback/my | Get user's feedback       |
+| PUT    | /api/feedback/my | Create or update feedback |
+
+### Admin
+
+| Method | Endpoint          | Description      |
+| ------ | ----------------- | ---------------- |
+| GET    | /api/feedback     | Get all feedback |
+| POST   | /api/feedback     | Create feedback  |
+| PUT    | /api/feedback/:id | Update feedback  |
+| DELETE | /api/feedback/:id | Delete feedback  |
+
+## Future Improvements
+
+* Search and filter feedback
+* Pagination for admin dashboard
+* Email notifications
+* User profile management
+* Dashboard analytics
+
+## Author
+
+Isha Shukla
